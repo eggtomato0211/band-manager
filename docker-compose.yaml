@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # 1. APIサーバー (Go)
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: band-manager-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=band_db
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+
+  # 2. データベース (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: band-manager-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=band_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
