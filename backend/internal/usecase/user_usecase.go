@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"portfolio-band-manager-backend/internal/domain/model"
-	"portfolio-band-manager-backend/internal/domain/repository"
+	"backend/internal/domain/model"
+	"backend/internal/domain/repository"
 )
 
 // UserUsecase インターフェース
@@ -27,7 +27,7 @@ func NewUserUsecase(userRepo repository.UserRepository) UserUsecase {
 // RegisterUser 実装: ユーザー登録ロジック
 func (u *userUsecase) RegisterUser(name string, email string) error {
 	// ここにバリデーション（名前が空じゃないか等）を書くこともあります
-	
+
 	// 保存するデータの組み立て
 	newUser := &model.User{
 		Name:  name,

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	"portfolio-band-manager-backend/internal/usecase"
+	"backend/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )

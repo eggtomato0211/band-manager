@@ -1,4 +1,4 @@
-module portfolio-band-manager-backend
+module backend
 
 go 1.25.6
 

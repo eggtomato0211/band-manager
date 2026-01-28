@@ -10,10 +10,10 @@ import (
 	"gorm.io/gorm"
 
 	// 自分で作ったパッケージをインポート
-	"portfolio-band-manager-backend/internal/domain/model"
-	"portfolio-band-manager-backend/internal/infrastructure/persistence"
-	"portfolio-band-manager-backend/internal/interface/controller"
-	"portfolio-band-manager-backend/internal/usecase"
+	"backend/internal/domain/model"
+	"backend/internal/infrastructure/persistence"
+	"backend/internal/interface/controller"
+	"backend/internal/usecase"
 )
 
 func main() {

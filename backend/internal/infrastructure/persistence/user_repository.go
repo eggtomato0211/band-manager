@@ -1,8 +1,9 @@
 package persistence
 
 import (
-	"portfolio-band-manager-backend/internal/domain/model"
-	"portfolio-band-manager-backend/internal/domain/repository"
+	"backend/internal/domain/model"
+	"backend/internal/domain/repository"
+
 	"gorm.io/gorm"
 )
 
