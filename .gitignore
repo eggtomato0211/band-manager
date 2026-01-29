@@ -1,0 +1,31 @@
+# General
+.DS_Store
+*.log
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.vercel
+frontend/next-env.d.ts
+
+# Backend (Go)
+backend/tmp/
+backend/bin/
+backend/main
+backend/.env
+backend/.air.toml # Sometimes people want to track config, but if it contains secrets or local paths... wait, .air.toml is usually safe. I'll leave it unless it's strictly local. Actually air.toml is in the file list I saw. I'll leave it unignored unless requested.
+backend/vendor/ # If using modules, usually we don't commit vendor unless desired. Default ignore is safer.
+
+# Docker
+.env
