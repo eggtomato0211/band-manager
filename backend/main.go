@@ -9,7 +9,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	// 自分で作ったパッケージをインポート
+	// ★ここが backend/internal/... になっています！
 	"backend/internal/domain/model"
 	"backend/internal/infrastructure/persistence"
 	"backend/internal/interface/controller"
@@ -17,9 +17,7 @@ import (
 )
 
 func main() {
-	// ==========================================
-	// 1. インフラ層の準備 (DB接続)
-	// ==========================================
+	// DB接続
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Tokyo",
 		os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_USER"),
@@ -31,39 +29,43 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	// マイグレーション (テーブル自動作成)
-	// アプリ起動時に、Goの構造体を見てSQLテーブルを作ってくれます
+	// マイグレーション
 	db.AutoMigrate(&model.User{}, &model.Event{}, &model.EventAttendance{})
 
 	// ==========================================
-	// 2. 依存性の注入 (DI: Dependency Injection)
-	// ここで「リレーのバトン」を渡していきます
+	// 2. 依存性の注入 (DI)
 	// ==========================================
 
-	// [Repository] DB接続(db)を渡して、Repositoryを作る
+	// [Repository]
 	userRepo := persistence.NewUserRepository(db)
+	eventRepo := persistence.NewEventRepository(db)           // 追加
+	attendanceRepo := persistence.NewAttendanceRepository(db) // 追加
 
-	// [UseCase] Repositoryを渡して、UseCaseを作る
+	// [UseCase]
 	userUsecase := usecase.NewUserUsecase(userRepo)
+	eventUsecase := usecase.NewEventUsecase(eventRepo, attendanceRepo) // 追加
 
-	// [Controller] UseCaseを渡して、Controllerを作る
+	// [Controller]
 	userCtrl := controller.NewUserController(userUsecase)
+	eventCtrl := controller.NewEventController(eventUsecase) // 追加
 
 	// ==========================================
-	// 3. Webサーバーの起動 (Gin)
+	// 3. Webサーバーの起動
 	// ==========================================
 	r := gin.Default()
 
-	// ヘルスチェック (生存確認用)
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	// ユーザー関連のルーティング
-	// controllerのメソッドを登録します
-	r.POST("/users", userCtrl.SignUp)   // 登録
-	r.GET("/users", userCtrl.ListUsers) // 一覧取得
+	// ユーザーAPI
+	r.POST("/users", userCtrl.SignUp)
+	r.GET("/users", userCtrl.ListUsers)
 
-	// サーバー起動 (ポート8080)
+	// ★追加: イベント・出欠API
+	r.POST("/events", eventCtrl.CreateEvent)      // イベント作成
+	r.GET("/events/:id", eventCtrl.GetEvent)      // イベント詳細(出欠状況含む)
+	r.POST("/attendances", eventCtrl.AnswerAttendance) // 出欠回答
+
 	r.Run(":8080")
 }
