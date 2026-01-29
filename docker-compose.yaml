@@ -31,6 +31,22 @@ services:
       - POSTGRES_DB=band_db
     volumes:
       - db-data:/var/lib/postgresql/data
-
+    
+  # 3. フロントエンド (Next.js)
+  frontend:
+    container_name: band-manager-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - WATCHPACK_POLLING=true
+    tty: true
+   
 volumes:
   db-data:

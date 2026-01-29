@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -53,6 +55,20 @@ func main() {
 	// 3. Webサーバーの起動
 	// ==========================================
 	r := gin.Default()
+
+	// CORS設定
+	r.Use(cors.New(cors.Config{
+		// 許可するオリジン (Next.jsのURL)
+		AllowOrigins:     []string{"http://localhost:3000"},
+		// 許可するメソッド
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		// 許可するヘッダー
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		// クッキーなどの情報を送ることを許可するか
+		AllowCredentials: true,
+		// プリフライトリクエストのキャッシュ時間
+		MaxAge: 12 * time.Hour,
+	}))
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
