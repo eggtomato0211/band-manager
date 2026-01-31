@@ -80,6 +80,7 @@ func main() {
 
 	// ★追加: イベント・出欠API
 	r.POST("/events", eventCtrl.CreateEvent)      // イベント作成
+	r.GET("/events", eventCtrl.ListEvents)        // イベント一覧取得
 	r.GET("/events/:id", eventCtrl.GetEvent)      // イベント詳細(出欠状況含む)
 	r.POST("/attendances", eventCtrl.AnswerAttendance) // 出欠回答
 

@@ -9,6 +9,7 @@ import (
 type EventUsecase interface {
 	CreateEvent(name string, dateStr string) error
 	GetEvent(id uint) (*model.Event, error)
+	ListEvents() ([]*model.Event, error)
 	RegisterAttendance(eventID uint, userID string, status int, comment string) error
 }
 
@@ -40,6 +41,10 @@ func (u *eventUsecase) CreateEvent(name string, dateStr string) error {
 
 func (u *eventUsecase) GetEvent(id uint) (*model.Event, error) {
 	return u.eventRepo.FindByID(id)
+}
+
+func (u *eventUsecase) ListEvents() ([]*model.Event, error) {
+	return u.eventRepo.FindAll()
 }
 
 // RegisterAttendance 出欠登録ロジック

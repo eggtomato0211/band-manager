@@ -3,6 +3,7 @@ package persistence
 import (
 	"backend/internal/domain/model"
 	"backend/internal/domain/repository"
+
 	"gorm.io/gorm"
 )
 
@@ -27,6 +28,14 @@ func (r *eventRepository) FindByID(id uint) (*model.Event, error) {
 		return nil, err
 	}
 	return &event, nil
+}
+
+func (r *eventRepository) FindAll() ([]*model.Event, error) {
+	var events []*model.Event
+	if err := r.db.Find(&events).Error; err != nil {
+		return nil, err
+	}
+	return events, nil
 }
 
 // --- Attendance Repository ---

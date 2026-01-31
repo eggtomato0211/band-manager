@@ -6,6 +6,7 @@ package repository
  type EventRepository interface {
 	Create(event *model.Event) error
 	FindByID(id uint) (*model.Event, error)
+	FindAll() ([]*model.Event, error)
  }
 
  // AttendanceRepository: 出欠状況の管理

@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"backend/internal/usecase"
 	"net/http"
 	"strconv"
-	"backend/internal/usecase"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,6 +49,16 @@ func (ec *EventController) GetEvent(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"event": event})
+}
+
+// ListEvents イベント一覧取得 (GET /events)
+func (ec *EventController) ListEvents(c *gin.Context) {
+	events, err := ec.eVusecase.ListEvents()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, events)
 }
 
 // AnswerAttendance 出欠回答 (POST /attendances)
