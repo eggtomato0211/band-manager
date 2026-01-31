@@ -58,7 +58,7 @@ export default function CreateEventPage() {
               type="text"
               required
               placeholder="例: 定期練習、ライブ"
-              className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-indigo-500 outline-none text-black"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -70,7 +70,7 @@ export default function CreateEventPage() {
             <input
               type="datetime-local"
               required
-              className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-indigo-500 outline-none text-black"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
